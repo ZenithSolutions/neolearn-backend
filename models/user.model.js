@@ -4,13 +4,13 @@ const bcrypt=require('bcrypt');
 const confiq=require('../config/config').get(process.env.NODE_ENV);
 const salt=10;
 
-const userSchema=mongoose.Schema({
-    firstname:{
+const UserSchema = mongoose.Schema({
+    firstName:{
         type: String,
         required: true,
         maxlength: 100
     },
-    lastname:{
+    lastName:{
         type: String,
         required: true,
         maxlength: 100
@@ -37,7 +37,7 @@ const userSchema=mongoose.Schema({
     }
 });
 
-userSchema.pre('save',function(next){
+UserSchema.pre('save',function(next){
     var user=this;
     
     if(user.isModified('password')){
@@ -58,7 +58,7 @@ userSchema.pre('save',function(next){
     }
 })
 
-userSchema.methods.comparepassword=function(password,cb){
+UserSchema.methods.comparepassword=function(password,cb){
     bcrypt.compare(password,this.password,function(err,isMatch){
         if(err) return cb(next);
         cb(null,isMatch);
@@ -67,7 +67,7 @@ userSchema.methods.comparepassword=function(password,cb){
 
 const secretString = 'D5FFB23A8875B377EDECCA0281838BA4'
 
-userSchema.methods.generateToken=function(cb){
+UserSchema.methods.generateToken=function(cb){
     var user =this;
     let userSign = {
         id: user._id,
@@ -83,7 +83,7 @@ userSchema.methods.generateToken=function(cb){
     })
 }
 
-userSchema.statics.findByToken=function(token,cb){
+UserSchema.statics.findByToken=function(token,cb){
     var user=this;
 
     jwt.verify(token,secretString,function(err,decode){
@@ -94,7 +94,7 @@ userSchema.statics.findByToken=function(token,cb){
     })
 };
 
-userSchema.methods.deleteToken=function(token,cb){
+UserSchema.methods.deleteToken=function(token,cb){
     var user=this;
 
     user.update({$unset : {token :1}},function(err,user){
@@ -103,4 +103,4 @@ userSchema.methods.deleteToken=function(token,cb){
     })
 }
 
-module.exports=mongoose.model('User',userSchema);
+module.exports=mongoose.model('User',UserSchema);
