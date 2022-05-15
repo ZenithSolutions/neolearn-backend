@@ -15,6 +15,9 @@ const boot = async () => {
     app.use(cookieParser());
 
     app.use('/api', routes);
+    app.get('/', (req, res) => {
+        res.status(200).send({message : 'The server is working'})
+    })
     // listening port
     const PORT=process.env.PORT||8080;
     app.listen(PORT,()=>{
