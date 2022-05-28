@@ -1,1 +1,1 @@
-web: node index.js
+web: env-cmd -f .env node index.js
