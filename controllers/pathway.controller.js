@@ -8,10 +8,10 @@ class PathwayController {
       console.log("Registering user with the credentials");
       PathwayService.create(content)
         .then((result) => {
-          console.log(result);
+          res.status(201).send({message: result.message})
         })
         .catch((err) => {
-          console.error(err);
+          res.status(500).send({ error: err })
         });
     },
   };
@@ -22,12 +22,43 @@ class PathwayController {
           console.log('Getting the available pathways')
           PathwayService.get()
           .then((result) => {
-              console.log(result);
+            res.status(200).send({message: result.message})
           })
           .catch((err) => {
-              console.error(err);
+            res.status(500).send({ error: err.message })
           })
       }
+  }
+
+  addCourseToPathway = {
+    middleware: [],
+    action: async (req, res) => {
+      const id = req.params.id
+      const course = req.body
+      console.log('Adding the course to the pathway using ID')
+      PathwayService.addContent(id, course)
+      .then((result) => {
+        res.status(201).send({ message: result.message})
+      })
+      .catch((err) => {
+        res.status(500).send({ error: err })
+      })
+    }
+  }
+
+  fetchPathway = {
+    middleware: [],
+    action : async function (req, res) {
+      const id = req.params.id
+      console.log('Fetching the specified pathway')
+      PathwayService.getPathByID(id)
+      .then((result) => {
+        res.status(200).send({message : result.message})
+      })
+      .catch((err) => {
+        res.status(500).send({ error: err })
+      })
+    }
   }
 }
 

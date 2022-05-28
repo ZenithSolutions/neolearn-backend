@@ -1,6 +1,11 @@
 const mongoose = require('mongoose')
 
 const PathwaySchema = mongoose.Schema({
+
+    _id: {
+        type: String
+    },
+
     pathwayName : {
         type: String,
         required : true
@@ -10,8 +15,7 @@ const PathwaySchema = mongoose.Schema({
         type : Number,
     },
     pathwayDuration : {
-        type : String,
-        required : true
+        type : String
     },
     curatedBy : {
         type : String,

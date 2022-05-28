@@ -20,10 +20,36 @@ class PathwayService {
         const query = {}
 
         try {
-            const pathway = Pathway.find(query)
+            const pathway = await Pathway.find(query)
             return { message : pathway}
         } catch (err) {
             return { message : `Error occured while fetching the data from the DB ${err}` }
+        }
+    }
+
+    addContent = async (id, body) => {
+        const pathwayID = id
+        try{
+            await Pathway.findByIdAndUpdate(
+                pathwayID,
+                {$addToSet: {courses: body}},
+                async (err, result) => {
+                    if (err) return err
+                    return { message: `${result} the course has been added` }
+                } 
+            )
+        } catch(err) {
+            return { message : `Error occured while updating the pathway ${err}` }
+        }
+    }
+
+    getPathByID = async (id) => {
+        const pathwayID = id
+        try {
+            const content = await Pathway.findById(id)
+            return { message : `Pathway ${content}`}
+        } catch(err) {
+            return { message : `Error occured while fetching path ${err}` }
         }
     }
 }

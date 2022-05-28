@@ -18,4 +18,8 @@ router.post('/pathway', pathwayController.createPathway.action)
 
 router.get('/pathway',  pathwayController.getPathway.action)
 
+router.put('/pathway/:id', pathwayController.addCourseToPathway.action)
+
+router.get('/pathway/:id', pathwayController.fetchPathway.action)
+
 module.exports = router
