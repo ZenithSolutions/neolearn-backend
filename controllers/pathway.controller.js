@@ -6,7 +6,7 @@ class PathwayController {
     action: async (req, res) => {
       const content = req.body;
       console.log("Registering user with the credentials");
-      PathwayService.create(content)
+      await PathwayService.create(content)
         .then((result) => {
           res.status(201).send({message: result.message})
         })
@@ -20,7 +20,7 @@ class PathwayController {
       middlware: [],
       action: async (req, res) => {
           console.log('Getting the available pathways')
-          PathwayService.get()
+          await PathwayService.get()
           .then((result) => {
             res.status(200).send({message: result.message})
           })
@@ -36,7 +36,7 @@ class PathwayController {
       const id = req.params.id
       const course = req.body
       console.log('Adding the course to the pathway using ID')
-      PathwayService.addContent(id, course)
+      await PathwayService.addContent(id, course)
       .then((result) => {
         res.status(201).send({ message: result.message})
       })
@@ -48,10 +48,10 @@ class PathwayController {
 
   fetchPathway = {
     middleware: [],
-    action : async function (req, res) {
+    action : async (req, res) => {
       const id = req.params.id
       console.log('Fetching the specified pathway')
-      PathwayService.getPathByID(id)
+      await PathwayService.getPathByID(id)
       .then((result) => {
         res.status(200).send({message : result.message})
       })
@@ -60,6 +60,64 @@ class PathwayController {
       })
     }
   }
+
+  createNewCourse = {
+    middleware: [],
+    action : async (req, res) => {
+      console.log('Creating new Course')
+      await PathwayService.createCourse(req.body)
+      .then((result) => {
+        res.status(201).send({ message: result.message})
+      })
+      .catch((err) => {
+        res.status(500).send({ error: err })
+      })
+    }
+  }
+
+  getAllCourse = {
+    middleware: [],
+    action : async (req, res) => {
+      console.log('Getting all Courses from DB')
+      await PathwayService.getAllCourse()
+      .then((result) => {
+        res.status(200).send({ message: result.message})
+      })
+      .catch((err) => {
+        res.status(500).send({error: err})
+      })
+    }
+  }
+
+  addCourseToPathway = {
+    middleware: [],
+    action : async (req, res) => {
+      console.log('Attaching Course to the specified pathway')
+      const resultData = await PathwayService.addCourseToPathway(req.params.id, req.body)
+      .then((result) => {
+        res.status(200).send({ message: resultData, result: result})
+      })
+      .catch((err) => {
+        res.status(500).send({error: err})
+      })
+    }
+  }
+
+  viewCourseOnPathway = {
+    middleware: [],
+    action : async (req, res) => {
+      console.log('Populating the specified pathway with the courses')
+      await PathwayService.viewCourseOnPathway(req.params.id)
+      .then((result) => {
+        res.status(200).send({data: result.courses})
+      })
+      .catch((err) => {
+        res.status(500).send({error: err})
+      })
+    }
+  }
+
+
 }
 
 module.exports = new PathwayController();

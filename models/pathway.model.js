@@ -1,5 +1,19 @@
 const mongoose = require('mongoose')
 
+const CourseSchema = mongoose.Schema({
+
+    _id: {type: mongoose.Schema.Types.ObjectId, required: true},
+
+    courseCategory : {
+        type : String,
+        required : true
+    },
+
+    content : {
+        type : mongoose.Schema.Types.Mixed
+    }
+})
+
 const PathwaySchema = mongoose.Schema({
 
     _id: {
@@ -25,39 +39,12 @@ const PathwaySchema = mongoose.Schema({
         type : String,
         requried : true
     },
-    courses : {
-        type : Array,
-        schema : {
-            courseName : {
-                type : String,
-                required : true
-            },
-            courseDuration : {
-                type : String,
-                required : true
-            },
-            courseCost : {
-                type : Number,
-                required : true
-            },
-            description : {
-                type : String,
-                required : true
-            },
-            link : {
-                type : String,
-                required : true
-            },
-            image : {
-                type : String,
-                required : true
-            },
-            level : {
-                type : String,
-                required : true
-            }
-        }
-    }
+    courses : [{ type: mongoose.Schema.Types.ObjectId, ref: 'Course' }]
 })
 
-module.exports = mongoose.model('Pathway', PathwaySchema)
+
+
+const Course = mongoose.model('Course', CourseSchema)
+const Pathway = mongoose.model('Pathway', PathwaySchema)
+
+module.exports = { Course, Pathway }

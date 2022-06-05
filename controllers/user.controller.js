@@ -8,10 +8,10 @@ class UserController {
       console.log("Registering user with the credentials");
       UserService.register(newuser)
         .then((result) => {
-          console.log(result);
+          res.status(200).send(result)
         })
         .catch((err) => {
-          console.error(err);
+          res.status(500).send(err)
         });
     },
   };
@@ -23,10 +23,10 @@ class UserController {
       let token = req.cookies.auth;
       UserService.login(token)
         .then((result) => {
-          console.log(result);
+          res.status(200).send(result)
         })
         .catch((err) => {
-          console.error(err);
+          res.status(500).send(err)
         });
     },
   };
@@ -57,9 +57,11 @@ class UserController {
           console.log('Getting all the user Data');
           UserService.get()
           .then((user) => {
-              console.log(user)
+              res.status(200).send({data : user})
           })
-          .catch(err => console.error(err));
+          .catch(err => {
+            res.status(500).send({ error: err.message})
+          });
       }
   }
 }

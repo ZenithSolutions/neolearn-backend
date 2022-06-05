@@ -22,4 +22,13 @@ router.put('/pathway/:id', pathwayController.addCourseToPathway.action)
 
 router.get('/pathway/:id', pathwayController.fetchPathway.action)
 
+router.put('/pathway/course/:id', pathwayController.addCourseToPathway.action)
+
+router.get('/pathway/course/:id', pathwayController.viewCourseOnPathway.action)
+
+router.post('/course', pathwayController.createNewCourse.action)
+
+router.get('/course', pathwayController.getAllCourse.action)
+
+
 module.exports = router
