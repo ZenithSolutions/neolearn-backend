@@ -30,13 +30,13 @@ class PathwayController {
       }
   }
 
-  addCourseToPathway = {
+  putCourseToPathway = {
     middleware: [],
     action: async (req, res) => {
       const id = req.params.id
       const course = req.body
       console.log('Adding the course to the pathway using ID')
-      await PathwayService.addContent(id, course)
+      await PathwayService.addNewCourseToPathway(id, course)
       .then((result) => {
         res.status(201).send({ message: result.message})
       })
@@ -93,9 +93,9 @@ class PathwayController {
     middleware: [],
     action : async (req, res) => {
       console.log('Attaching Course to the specified pathway')
-      const resultData = await PathwayService.addCourseToPathway(req.params.id, req.body)
+      await PathwayService.addExistingToPathway(req.params.id, req.body)
       .then((result) => {
-        res.status(200).send({ message: resultData, result: result})
+        res.status(200).send({ result: result.message})
       })
       .catch((err) => {
         res.status(500).send({error: err})
@@ -109,7 +109,7 @@ class PathwayController {
       console.log('Populating the specified pathway with the courses')
       await PathwayService.viewCourseOnPathway(req.params.id)
       .then((result) => {
-        res.status(200).send({data: result.courses})
+        res.status(200).send({data: result})
       })
       .catch((err) => {
         res.status(500).send({error: err})

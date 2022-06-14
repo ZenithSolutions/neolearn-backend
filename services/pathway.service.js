@@ -35,27 +35,30 @@ class PathwayService {
     }
   };
 
-  addContent = async (id, body) => {
-    const pathwayID = id;
+  addExistingToPathway = async (_id, _body) => {
+    const pathwayID = _id;
+    const course = _body
     try {
-      await Pathway.findByIdAndUpdate(
-        pathwayID,
-        { $addToSet: { courses: body } },
-        async (err, result) => {
-          if (err) return err;
-          return { message: `${result} the course has been added` };
-        }
-      );
+      const selectedPathway = await Pathway.findById(pathwayID);
+      arr.push(course);
+      await Pathway.findByIdAndUpdate( pathwayID, {
+        courses: arr,
+      });
+      return { message: 'Added to pathway'}
     } catch (err) {
-      return { message: `Error occured while updating the pathway ${err}` };
+      return {
+        message: `Error occured while attaching the Course to pathway ${err}`,
+      };
     }
   };
 
   getPathByID = async (id) => {
     const pathwayID = id;
     try {
-      const content = await Pathway.findById(id);
-      return { message: `Pathway ${content}` };
+      const content = await Pathway.findById(pathwayID)
+      .populate("courses")
+      .exec();
+      return { message: content };
     } catch (err) {
       return { message: `Error occured while fetching path ${err}` };
     }
@@ -89,22 +92,19 @@ class PathwayService {
     }
   };
 
-  addCourseToPathway = async (_id, _body) => {
-    const course = ObjectId(_body._id);
+  addNewCourseToPathway = async (_id, _body) => {
+    const course = _body
     const pathway = _id;
 
-    console.log("Coming in");
+    console.log(pathway,course);
     try {
       const selectedPathway = await Pathway.findById(pathway);
-      console.log({ selectedPathway });
-      console.log(selectedPathway.courses[0]);
-      const newar = arr.push(course);
-      console.log(arr);
+      arr.push(course._id);
       await Pathway.findByIdAndUpdate(pathway, {
         courses: arr,
       });
       await Course.create(_body);
-      return { message: `Course has been added to pathway` };
+      return { message: 'Added to pathway'}
     } catch (err) {
       return {
         message: `Error occured while attaching the Course to pathway ${err}`,
@@ -113,16 +113,12 @@ class PathwayService {
   };
 
   viewCourseOnPathway = async (_id) => {
-    console.log(_id);
     const pathwayID = _id;
-    let someCourse;
     let result;
     try {
       result = await Pathway.findOne({ _id: pathwayID })
-        .skip(0)
-        .limit(15)
         .populate("courses")
-        .exec();
+        .exec();  
       return result;
     } catch (err) {
       return { message: `Error occured while adding the data ${err} ` };

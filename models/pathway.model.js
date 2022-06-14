@@ -9,6 +9,20 @@ const CourseSchema = mongoose.Schema({
         required : true
     },
 
+    courseOrigin: {
+        type : String,
+        required : true
+    },
+
+    coursePic: {
+        type : String,
+    },
+
+    courseName: {
+        type : String,
+        required : true
+    },
+
     content : {
         type : mongoose.Schema.Types.Mixed
     }
@@ -25,12 +39,33 @@ const PathwaySchema = mongoose.Schema({
         required : true
     },
 
+    profilePic: {
+        type: String,
+    },
+
+    companyPic: {
+        type: String,
+    },
+
+    displayPic: {
+        type: String,
+    },
+
     pathwayCost : {
         type : Number,
     },
     pathwayDuration : {
         type : String
     },
+
+    rating: {
+        type: Number
+    },
+
+    difficulty: {
+        type: String
+    },
+
     curatedBy : {
         type : String,
         required : true

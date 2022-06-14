@@ -6,12 +6,12 @@ class UserController {
     action: async (req, res) => {
       const newuser = req.body;
       console.log("Registering user with the credentials");
-      UserService.register(newuser)
+      await UserService.register(newuser)
         .then((result) => {
           res.status(200).send(result)
         })
         .catch((err) => {
-          res.status(500).send(err)
+          res.status(500).json({ error: err.error })
         });
     },
   };
@@ -21,7 +21,7 @@ class UserController {
     action: async (req, res) => {
       console.log("Checking permissions for the user to login");
       let token = req.cookies.auth;
-      UserService.login(token)
+      await UserService.login(token)
         .then((result) => {
           res.status(200).send(result)
         })
@@ -55,7 +55,7 @@ class UserController {
       middleware: [],
       action : async (req, res) => {
           console.log('Getting all the user Data');
-          UserService.get()
+          await UserService.get()
           .then((user) => {
               res.status(200).send({data : user})
           })
