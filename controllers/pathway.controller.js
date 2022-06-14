@@ -20,7 +20,7 @@ class PathwayController {
       middlware: [],
       action: async (req, res) => {
           console.log('Getting the available pathways')
-          await PathwayService.get()
+          await PathwayService.get(req.query)
           .then((result) => {
             res.status(200).send({message: result.message})
           })
@@ -79,7 +79,7 @@ class PathwayController {
     middleware: [],
     action : async (req, res) => {
       console.log('Getting all Courses from DB')
-      await PathwayService.getAllCourse()
+      await PathwayService.getAllCourse(req.query)
       .then((result) => {
         res.status(200).send({ message: result.message})
       })

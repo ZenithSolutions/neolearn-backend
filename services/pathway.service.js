@@ -18,7 +18,7 @@ class PathwayService {
     }
   };
 
-  get = async () => {
+  get = async (params) => {
     console.log("Fetching data from Database");
     this.offset = 10;
     this.queryLimit = 10;
@@ -27,6 +27,14 @@ class PathwayService {
 
     try {
       const pathway = await Pathway.find(query);
+
+      if(params.search) {
+         const searchKey = new RegExp(params.search, 'i')
+         query = {
+          $or: [{ pathwayName: searchKey }]
+         }
+      }
+
       return { message: pathway };
     } catch (err) {
       return {
@@ -75,7 +83,7 @@ class PathwayService {
     }
   };
 
-  getAllCourse = async () => {
+  getAllCourse = async (params) => {
     console.log("Fetching Coursedata from Database");
     this.offset = 10;
     this.queryLimit = 10;
@@ -83,6 +91,12 @@ class PathwayService {
     const query = {};
 
     try {
+      if(params.search) {
+        const searchKey = new RegExp(params.search, 'i')
+        query = {
+         $or: [{ courseName: searchKey}, { courseCategory: searchKey}, { courseOrigin: searchKey }]
+        }
+     }
       const Courses = await Course.find(query);
       return { message: Courses };
     } catch (err) {
