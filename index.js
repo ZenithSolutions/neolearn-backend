@@ -6,6 +6,7 @@ const User = require("./models/user.model");
 const routes = require("./routes");
 const dbInitialize = require("./lib/mongo.db");
 const router = require("./routes");
+const cors = require('cors')
 require("dot-env").config;
 
 const app = express();
@@ -50,7 +51,7 @@ const boot = async () => {
     done(null, user);
   });
 
-  
+  app.use(cors())
   app.use(express.urlencoded({ extended: false }));
   app.use(express.json());
   app.use(cookieParser());
