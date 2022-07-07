@@ -15,6 +15,18 @@ const UserSchema = mongoose.Schema({
         required: true,
         maxlength: 100
     },
+    photo: {
+        type: String
+    },
+    designation: {
+        type: String
+    },
+    companyLogo: {
+        type: String,
+    },
+    companyName: {
+        type: String
+    },
     email:{
         type: String,
         required: true,

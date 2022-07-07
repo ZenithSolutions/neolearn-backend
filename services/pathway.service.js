@@ -1,4 +1,5 @@
-const { Pathway, Course } = require("../models/pathway.model");
+const { Pathway } = require("../models/pathway.model");
+const { Course } = require('../models/course.model')
 const { ObjectId } = require("mongodb");
 const res = require("express/lib/response");
 
@@ -11,7 +12,13 @@ class PathwayService {
     console.log("Creating a course pathway for the curator");
     const body = _body;
     try {
+      console.log(body)
       await Pathway.create(body);
+      const courses = body.courses
+      console.log(courses)
+      for (const course of courses) {
+        await Course.create(course)
+      }
       return { message: "Pathway added to DB" };
     } catch (err) {
       return { message: `Error occured while storing in DB ${err}` };
@@ -26,6 +33,7 @@ class PathwayService {
     const query = {};
 
     try {
+      console.log(params)
       const pathway = await Pathway.find(query);
 
       if(params.search) {
@@ -34,6 +42,8 @@ class PathwayService {
           $or: [{ pathwayName: searchKey }]
          }
       }
+
+      console.log(query)
 
       return { message: pathway };
     } catch (err) {
@@ -85,18 +95,20 @@ class PathwayService {
 
   getAllCourse = async (params) => {
     console.log("Fetching Coursedata from Database");
-    this.offset = 10;
-    this.queryLimit = 10;
-
+    
     const query = {};
+    query.offset = 0;
+    query.limit = 10;
 
     try {
+      console.log(params)
       if(params.search) {
         const searchKey = new RegExp(params.search, 'i')
         query = {
          $or: [{ courseName: searchKey}, { courseCategory: searchKey}, { courseOrigin: searchKey }]
         }
      }
+     console.log(query)
       const Courses = await Course.find(query);
       return { message: Courses };
     } catch (err) {
@@ -108,17 +120,14 @@ class PathwayService {
 
   addNewCourseToPathway = async (_id, _body) => {
     const course = _body
-    const pathway = _id;
-
-    console.log(pathway,course);
+    const pathwayID = _id;
+    console.log(course, pathwayID)
     try {
-      const selectedPathway = await Pathway.findById(pathway);
-      arr.push(course._id);
-      await Pathway.findByIdAndUpdate(pathway, {
-        courses: arr,
-      });
-      await Course.create(_body);
-      return { message: 'Added to pathway'}
+      const data = await Pathway.findByIdAndUpdate(pathwayID,
+        { $push: { "courses": course} },
+        { "new": true, "upsert": true }
+    );
+    return { message: data }
     } catch (err) {
       return {
         message: `Error occured while attaching the Course to pathway ${err}`,

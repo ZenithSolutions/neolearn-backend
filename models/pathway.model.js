@@ -1,85 +1,94 @@
-const mongoose = require('mongoose')
-
-const CourseSchema = mongoose.Schema({
-
-    _id: {type: mongoose.Schema.Types.ObjectId, required: true},
-
-    courseCategory : {
-        type : String,
-        required : true
-    },
-
-    courseOrigin: {
-        type : String,
-        required : true
-    },
-
-    coursePic: {
-        type : String,
-    },
-
-    courseName: {
-        type : String,
-        required : true
-    },
-
-    content : {
-        type : mongoose.Schema.Types.Mixed
-    }
-})
+const mongoose = require("mongoose");
 
 const PathwaySchema = mongoose.Schema({
+  _id: {
+    type: String,
+    required: true,
+  },
 
-    _id: {
-        type: String
-    },
+  pathwayName: {
+    type: String,
+  },
 
-    pathwayName : {
+  profilePic: {
+    type: String,
+  },
+
+  companyPic: {
+    type: String,
+  },
+
+  displayPic: {
+    type: String,
+  },
+
+  pathwayCost: {
+    type: String,
+  },
+  pathwayDuration: {
+    type: String,
+  },
+
+  rating: {
+    type: Number,
+  },
+
+  difficulty: {
+    type: String,
+  },
+
+  curatedBy: {
+    type: String,
+  },
+  personDesignation: {
+    type: String,
+  },
+  courses: [
+    {
+      platformName: {
         type: String,
-        required : true
-    },
+      },
 
-    profilePic: {
+      ratings: {
+        type: Number,
+      },
+
+      difficulty: {
         type: String,
-    },
+        enum: ["Begineer", "Intermediate", "Professional"],
+      },
 
-    companyPic: {
+      CTALink: {
         type: String,
-    },
+      },
 
-    displayPic: {
+      courseDescription: {
         type: String,
+      },
+
+      courseCategory: {
+        type: String,
+      },
+
+      courseOrigin: {
+        type: String,
+      },
+
+      coursePic: {
+        type: String,
+      },
+
+      courseName: {
+        type: String,
+      },
+
+      courseDuration: {
+        type: String,
+      },
     },
+  ],
+});
 
-    pathwayCost : {
-        type : Number,
-    },
-    pathwayDuration : {
-        type : String
-    },
+const Pathway = mongoose.model("Pathway", PathwaySchema);
 
-    rating: {
-        type: Number
-    },
-
-    difficulty: {
-        type: String
-    },
-
-    curatedBy : {
-        type : String,
-        required : true
-    },
-    personDesignation : {
-        type : String,
-        requried : true
-    },
-    courses : [{ type: mongoose.Schema.Types.ObjectId, ref: 'Course' }]
-})
-
-
-
-const Course = mongoose.model('Course', CourseSchema)
-const Pathway = mongoose.model('Pathway', PathwaySchema)
-
-module.exports = { Course, Pathway }
+module.exports = { Pathway };
