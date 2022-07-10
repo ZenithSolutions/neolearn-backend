@@ -12,7 +12,7 @@ const CourseSchema = mongoose.Schema({
 
     difficulty: {
         type: String,
-        enum: ['Begineer', 'Intermediate', 'Professional']
+        enum: ['Beginner', 'Intermediate', 'Professional']
     },
 
     CTALink: {
