@@ -1,10 +1,6 @@
 const mongoose = require("mongoose");
 
 const PathwaySchema = mongoose.Schema({
-  _id: {
-    type: String,
-    required: true,
-  },
 
   pathwayName: {
     type: String,
@@ -25,7 +21,7 @@ const PathwaySchema = mongoose.Schema({
   pathwayCost: {
     type: String,
   },
-  pathwayDuration: {
+  pathwayDescription: {
     type: String,
   },
 

@@ -33,17 +33,17 @@ class PathwayService {
     const query = {};
 
     try {
-      console.log(params)
-      const pathway = await Pathway.find(query);
-
-      if(params.search) {
-         const searchKey = new RegExp(params.search, 'i')
-         query = {
-          $or: [{ pathwayName: searchKey }]
-         }
+      let pathway
+      if(params.search !== undefined) {
+        const pathwayID = await Pathway.exists({ pathwayName: params.search})
+        .then(doc => doc._id)
+        .catch(err => console.log(err))
+      
+        pathway = await Pathway.findById(pathwayID)
+      } else {
+        pathway = await Pathway.find(query)
       }
 
-      console.log(query)
 
       return { message: pathway };
     } catch (err) {
