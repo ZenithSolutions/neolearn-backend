@@ -30,20 +30,19 @@ class PathwayService {
     this.offset = 10;
     this.queryLimit = 10;
 
-    const query = {};
+    let query = {};
 
     try {
       let pathway
+
       if(params.search !== undefined) {
-        const pathwayID = await Pathway.exists({ pathwayName: params.search})
-        .then(doc => doc._id)
-        .catch(err => console.log(err))
-      
-        pathway = await Pathway.findById(pathwayID)
-      } else {
-        pathway = await Pathway.find(query)
+        const searchKey = new RegExp(params.search, 'i')
+        query = {
+          $or: [{ pathwayName: searchKey }]
+        }
       }
 
+      pathway = await Pathway.find(query)
 
       return { message: pathway };
     } catch (err) {
