@@ -30,6 +30,20 @@ class PathwayController {
       }
   }
 
+  getMasterInOne = {
+    middlware: [],
+    action: async (req, res) => {
+        console.log('Getting the available master courses')
+        await PathwayService.getMasterInOne(req.query)
+        .then((result) => {
+          res.status(200).send({message: result.message})
+        })
+        .catch((err) => {
+          res.status(500).send({ error: err.message })
+        })
+    }
+}
+
   putCourseToPathway = {
     middleware: [],
     action: async (req, res) => {

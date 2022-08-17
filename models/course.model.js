@@ -10,6 +10,8 @@ const CourseSchema = mongoose.Schema({
         type: Number
     },
 
+    masterInOne: Boolean,
+
     difficulty: {
         type: String,
         enum: ['Beginner', 'Intermediate', 'Professional']

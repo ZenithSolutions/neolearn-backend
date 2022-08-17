@@ -29,6 +29,8 @@ router.get('/pathway/course/:id', pathwayController.viewCourseOnPathway.action)
 
 router.post('/course', pathwayController.createNewCourse.action)
 
+router.get('/master', pathwayController.getMasterInOne.action)
+
 router.get('/course', pathwayController.getAllCourse.action)
 
 router.get(
