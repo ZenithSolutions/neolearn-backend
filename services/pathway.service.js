@@ -69,6 +69,24 @@ class PathwayService {
     }
   };
 
+  getMasterInOne = async (params) => {
+    console.log("Fetching data from Database");
+    this.offset = 0;
+    this.queryLimit = 10;
+
+    let query = { masterInOne: true };
+
+    try {
+      let mio
+      mio = await Course.find(query)
+      return { message: mio };
+    } catch (err) {
+      return {
+        message: `Error occured while fetching the data from the DB ${err}`,
+      };
+    }
+  }
+
   getPathByID = async (id) => {
     const pathwayID = id;
     try {
