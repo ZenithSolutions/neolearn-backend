@@ -12,6 +12,8 @@ const CourseSchema = mongoose.Schema({
 
     masterInOne: Boolean,
 
+    courseSpecific: Boolean,
+
     difficulty: {
         type: String,
         enum: ['Beginner', 'Intermediate', 'Professional']
@@ -23,6 +25,10 @@ const CourseSchema = mongoose.Schema({
 
     courseDescription: {
         type: String
+    },
+
+    courseKey: {
+        type: String,
     },
 
     courseCategory : {

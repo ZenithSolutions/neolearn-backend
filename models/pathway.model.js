@@ -10,6 +10,33 @@ const PathwaySchema = mongoose.Schema({
     type: String,
   },
 
+  pathwayType: {
+    type: String,
+    enum: [
+      "Programming",
+      "Web development",
+      "App development",
+      "Design",
+      "Product Management",
+      "Data Science/AI/ML",
+      "Blockchain",
+      "Management",
+      "Marketing",
+    ],
+  },
+
+  linkedinUrl: {
+    type: String,
+  },
+
+  topmateUrl: {
+    type: String,
+  },
+
+  twitterUrl: {
+    type: String,
+  },
+
   companyPic: {
     type: String,
   },
@@ -22,6 +49,10 @@ const PathwaySchema = mongoose.Schema({
     type: String,
   },
   pathwayDescription: {
+    type: String,
+  },
+
+  pathwayKey: {
     type: String,
   },
 
@@ -63,6 +94,10 @@ const PathwaySchema = mongoose.Schema({
       },
 
       courseCategory: {
+        type: String,
+      },
+
+      courseKey: {
         type: String,
       },
 
