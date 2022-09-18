@@ -113,7 +113,7 @@ class PathwayService {
   getAllCourse = async (params) => {
     console.log("Fetching Coursedata from Database");
     
-    const query = {};
+    let query = {};
     query.offset = 0;
     query.limit = 10;
 
@@ -125,6 +125,22 @@ class PathwayService {
          $or: [{ courseName: searchKey}, { courseCategory: searchKey}, { courseOrigin: searchKey }]
         }
      }
+
+     if(params.data !== undefined) {
+      let mode = params.data
+      console.log(mode)
+      if (mode === 'mio') {
+        query = {
+          $or: [{ masterInOne: true }]
+        }
+      }
+      if (mode === 'cs') {
+        query = {
+          $or: [{ courseSpecific: true }]
+        }
+      }
+    }
+
      console.log(query)
       const Courses = await Course.find(query);
       return { message: Courses };
